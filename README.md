@@ -1,0 +1,2 @@
+#Output
+![](Media/RayCasting.gif)
