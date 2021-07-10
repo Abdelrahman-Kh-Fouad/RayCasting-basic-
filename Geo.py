@@ -1,6 +1,6 @@
 from math import *
 from copy import copy ,deepcopy
-from pygame import Vector2
+from pygame import Vector2 , draw
 EPS = 1e-6  
 class Point :
     def __init__(self , x , y ) -> None:
@@ -16,19 +16,20 @@ class Point :
     def distanceTo(self , to):
         return hypot((self.x - to.x) , (self.y - to.y))
 
+    def ConvertToVector2(self):
+        return Vector2(self.x , self.y)
 
 
 #Linear eqution for line (ax + by - c = 0 ) 
 class Line :
-
-    def __int__(self , beginPoint:Point , endPoint:Point):
+    def __init__(self , beginPoint:Point , endPoint:Point):
         self.beginPoint = beginPoint
         self.endPoint = endPoint
-
         self.direction = Vector2(endPoint.x - beginPoint.x , endPoint.y - beginPoint.y )
 
 
-
+    def Draw(self , surface  , color ):
+        draw.line(surface=surface , start_pos=self.beginPoint.ConvertToVector2() , end_pos=self.endPoint.ConvertToVector2() , color=color)
 
     # def __init__(self , firstPoint:Point , secondPoint:Point ) -> None:
     #     if fabs(firstPoint.x - secondPoint.x ) < EPS :
@@ -99,9 +100,9 @@ class Ray :
     def changePosition(self , pos:Point):
         self.position = deepcopy(pos)
 
-    def getEndPoint(self , lines :list):
+    def getEndPointLine(self , lines :list):
 
-        res =Point(self.position.x + 1000* self.direction.x , self.position.y + 1000* self.direction.y )
+        res =Point(self.position.x + 2000* self.direction.x , self.position.y + 2000* self.direction.y )
         lineToInteract = Line(self.position , res)
 
         for line in lines :
@@ -109,7 +110,7 @@ class Ray :
             if type(ret)!=bool:
                 if ret.distanceTo(self.position) < res.distanceTo(self.position):
                     res = copy(ret)
-        return res
+        return Line(self.position , res)
 
 
 
