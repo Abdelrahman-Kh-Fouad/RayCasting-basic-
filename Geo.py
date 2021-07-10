@@ -28,8 +28,8 @@ class Line :
         self.direction = Vector2(endPoint.x - beginPoint.x , endPoint.y - beginPoint.y )
 
 
-    def Draw(self , surface  , color ):
-        draw.line(surface=surface , start_pos=self.beginPoint.ConvertToVector2() , end_pos=self.endPoint.ConvertToVector2() , color=color)
+    def Draw(self , surface  , color , width):
+        draw.line(surface=surface , start_pos=self.beginPoint.ConvertToVector2() , end_pos=self.endPoint.ConvertToVector2() , color=color ,width=width)
 
     # def __init__(self , firstPoint:Point , secondPoint:Point ) -> None:
     #     if fabs(firstPoint.x - secondPoint.x ) < EPS :
@@ -85,7 +85,15 @@ class Line :
 
             res =Point(px , py)
             if (self.sameDirection(res)):
-                return res
+                one = Vector2((other.endPoint - res).ConvertToVector2())
+                two = Vector2((res - other.beginPoint).ConvertToVector2())
+                try :
+                    if one.normalize() == two.normalize():
+                        return res
+                    else :
+                        return False
+                except:
+                    pass
             return False
 
 
